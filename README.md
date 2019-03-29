@@ -1,6 +1,6 @@
-# Dancing Doll
+# Doll Dancing
 
-This project creates animated GIFs of a doll dancing from a segment of the film *Mechanical Doll.* The output GIF files consist of binary images so that they can be shown in quick succession on an e-paper display using the animation (A2) *waveform* mode, which works only in pure black and white.
+This project creates animated GIFs of a doll dancing from a segment of the film *Mechanical Doll.* The output GIF files consist of bilevel images so that they can be shown in quick succession on an e-paper display using the animation (A2) *waveform* mode, which works only with pure black and white pixels.
 
 ## Background
 
@@ -17,10 +17,10 @@ The content of this project itself is licensed under the [GNU General Public Lic
 The [Makefile](Makefile) requires the following programs on your PATH environment variable. Note that *ffmpeg* is launched from */snap/bin/ffmpeg* to use the [latest version](https://snapcraft.io/ffmpeg "FFmpeg by Snapcrafters") in the Snap Store.
 
 * **ffmpeg** – a video converter
+* **convert** – converts between image formats and edits images
 * **mkbitmap** – transforms images into bitmaps with scaling and filtering
 * **potrace** – transforms bitmaps into vector graphics
 * **inkscape** – an SVG editing program
-* **convert** – converts between image formats and edits images
 
 By default, the `make` command builds only *doll-dancing.gif*. To build *doll-traced.gif*, you must specify it as a target. If you have multiple processor cores on your computer, the build process can go much faster if you pass the *jobs* option to specify the number of cores. For example:
 
@@ -32,7 +32,7 @@ $ make -j 4 doll-traced.gif
 
 This project creates animated GIF images from the sequence of 360 frames in which the mechanical doll dances, as described below.
 
-* **doll-dancing.gif** – the 360-frame sequence created by appending the 180 odd frames with the 180 even frames in reverse, creating a loop with matching endpoints. Uses thresholding with no dithering to create the binary images.
+* **doll-dancing.gif** – the 360-frame sequence created by appending the 180 odd frames with the 180 even frames in reverse, creating a loop with matching endpoints. Uses thresholding with no dithering to create the bilevel images.
 
 * **doll-traced.gif** – the same sequence as the previous animation except that the frames are created by tracing each one into a vector graphics format before rendering them into their final size.
 

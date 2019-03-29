@@ -1,5 +1,5 @@
 # ======================================================================
-# Makefile - creates a binary animated GIF from a video clip
+# Makefile - creates a bilevel animated GIF from a video clip
 # Copyright (C) 2019 John Glenn Neffenger
 #
 # This program is free software: you can redistribute it and/or modify
@@ -19,14 +19,14 @@ SHELL = /bin/bash
 
 # Input files
 video = src/Mechanical_Doll_1922.webm
-palette = src/binary-palette.png
+palette = src/bilevel-palette.png
 
 # Commands
 FFMPEG = /snap/bin/ffmpeg
+CONVERT = convert
 MKBITMAP = mkbitmap
 POTRACE = potrace
 INKSCAPE = inkscape
-CONVERT = convert
 
 # Command options (mkbitmap defaults: -f 4 -s 2 -3 -t 0.45)
 MKBITMAP_FLAGS = --filter 16 --scale 2 --cubic --threshold 0.48
@@ -39,7 +39,7 @@ fps := $(shell echo $$((24/$(step))))
 delay := $(shell echo $$((100/$(fps))))
 frames := $(shell echo $$((15*$(fps))))
 
-# Video filters (looping twirl is at 3:59 frames 196 to 220)
+# Video filters (twirl loop is at 3:59 frames 196 to 220)
 odd := decimate=cycle=5,trim=start_frame=13:end_frame=373
 even := decimate=cycle=5,trim=start_frame=12:end_frame=372
 speed := framestep=step=$(step),setpts=N/($(fps)*TB)
@@ -53,43 +53,43 @@ start := -ss 3:59
 chain1_odd := $(odd),$(speed),$(vignette),$(scale) [x]
 chain1_even := $(even),$(speed),reverse,$(vignette),$(scale) [x]
 chain2 := [x][1:v] $(dither_none)
-filter_odd := -filter_complex "$(chain1_odd); $(chain2)"
-filter_even := -filter_complex "$(chain1_even); $(chain2)"
-frames_odd := -filter:v "$(odd),$(speed)"
-frames_even := -filter:v "$(even),$(speed)"
+gif_odd := -filter_complex "$(chain1_odd); $(chain2)"
+gif_even := -filter_complex "$(chain1_even); $(chain2)"
+ppm_odd := -filter:v "$(odd),$(speed)"
+ppm_even := -filter:v "$(even),$(speed),reverse"
 
 # Image processing options
-monochrome := -layers flatten -dither None -monochrome -negate
-animate := -delay $(delay) -dispose none -loop 0
+monochrome := -layers Flatten -dither None -monochrome -negate
+animate := -delay $(delay) -dispose None -loop 0 -background white
 
 # Lists of prerequisite files
 seq := {001..$(frames)}
 ppm_list := $(shell echo odd/frame-$(seq).ppm even/frame-$(seq).ppm)
-miff_list := $(shell echo odd/frame-$(seq).miff even/frame-$(seq).miff)
+gif_list := $(shell echo odd/frame-$(seq).gif even/frame-$(seq).gif)
 
 # ======================================================================
 # Pattern Rules
 # ======================================================================
 
 %.odd.gif: $(video)
-	$(FFMPEG) $(start) -i $< -i $(palette) $(filter_odd) -y $@
+	$(FFMPEG) $(start) -i $< -i $(palette) $(gif_odd) -y $@
 
 %.even.gif: $(video)
-	$(FFMPEG) $(start) -i $< -i $(palette) $(filter_even) -y $@
+	$(FFMPEG) $(start) -i $< -i $(palette) $(gif_even) -y $@
 
 %.gif: %.odd.gif %.even.gif
-	$(CONVERT) $^ -coalesce $@
+	$(CONVERT) $(animate) $^ -coalesce $@
 
-%.pbm: %.ppm
+frame-%.pbm: frame-%.ppm
 	$(MKBITMAP) $(MKBITMAP_FLAGS) --output $@ $<
 
-%.svg: %.pbm
+frame-%.svg: frame-%.pbm
 	$(POTRACE) $(POTRACE_FLAGS) --output $@ $<
 
-%.png: %.svg
+frame-%.png: frame-%.svg
 	$(INKSCAPE) $(INKSCAPE_FLAGS) --export-png=$@ $<
 
-%.miff: %.png
+frame-%.gif: frame-%.png
 	$(CONVERT) $< $(monochrome) $@
 
 # ======================================================================
@@ -100,14 +100,14 @@ miff_list := $(shell echo odd/frame-$(seq).miff even/frame-$(seq).miff)
 
 all: doll-dancing.gif
 
-doll-traced.gif: $(miff_list)
-	$(CONVERT) $(animate) $(miff_list) -coalesce $@
+doll-traced.gif: $(gif_list)
+	$(CONVERT) $(animate) $(gif_list) -coalesce $@
 
 $(ppm_list): split_video
 
 split_video: $(video)
-	$(FFMPEG) $(start) -i $< $(frames_odd) -y odd/frame-%03d.ppm
-	$(FFMPEG) $(start) -i $< $(frames_even) -y even/frame-%03d.ppm
+	$(FFMPEG) $(start) -i $< $(ppm_odd) -y odd/frame-%03d.ppm
+	$(FFMPEG) $(start) -i $< $(ppm_even) -y even/frame-%03d.ppm
 	touch $@
 
 clean:
