@@ -1,0 +1,5 @@
+# Ignore targets and intermediate files
+/split_video
+/doll-*.gif
+/even/*
+/odd/*
