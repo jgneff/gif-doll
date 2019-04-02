@@ -8,9 +8,11 @@ This project creates animated GIFs of a doll dancing from a segment of the film 
 
 ## Licenses
 
-The *Mechanical Doll* video file is in the public domain in the United States.
+The source [video file](src/Mechanical_Doll_1922.webm) is in the public domain in the United States.
 
-The content of this project itself is licensed under the [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/). The animated GIF files produced by this project are dual-licensed under the GNU General Public License v3.0 and the [Creative Commons Attribution Share Alike 4.0 International](https://choosealicense.com/licenses/cc-by-sa-4.0/) license.
+The other content of this project is licensed under the [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/).
+
+The animated GIF files produced by this project are licensed under the [Creative Commons Attribution Share Alike 4.0 International](https://choosealicense.com/licenses/cc-by-sa-4.0/) license.
 
 ## Building
 
