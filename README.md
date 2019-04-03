@@ -2,6 +2,10 @@
 
 This project creates animated GIFs of a doll dancing from a segment of the film *Mechanical Doll.* The output GIF files consist of bilevel images so that they can be shown in quick succession on an e-paper display using the animation (A2) *waveform* mode, which works only with pure black and white pixels.
 
+See the associated JavaFX project for a [video of the animation](https://jgneff.github.io/epd-javafx/doll.html) on an e-paper display.
+
+[![Doll Dancing](https://jgneff.github.io/epd-javafx/images/doll-2019-03-30-180.png)](https://jgneff.github.io/epd-javafx/doll.html)
+
 ## Background
 
 [*Mechanical Doll*](https://commons.wikimedia.org/wiki/File:Mechanical_Doll_(1922).webm "File:Mechanical Doll (1922).webm"), also known by the title *The Dresden Doll,* is a short American animated film produced by [Max Fleischer](https://en.wikipedia.org/wiki/Max_Fleischer) and directed by [Dave Fleischer](https://en.wikipedia.org/wiki/Dave_Fleischer). It was released in 1922 by Inkwell Studios as part of the series *Out of the Inkwell.* Max Fleischer drew the dancing sequence using his recently invented [rotoscoping](https://en.wikipedia.org/wiki/Rotoscoping) technique on a film of [his daughter Ruth](https://seymourkneitel.blogspot.com/2012/12/meet-my-mom.html "Meet My Mom! (by Ginny Mahoney)"), who was 16 years old at the time.
