@@ -1,6 +1,6 @@
 # ======================================================================
 # Makefile - creates a bilevel animated GIF from a video clip
-# Copyright (C) 2019 John Neffenger
+# Copyright (C) 2019-2020 John Neffenger
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ video = src/Mechanical_Doll_1922.webm
 palette = src/bilevel-palette.png
 
 # Commands
-FFMPEG = /snap/bin/ffmpeg
+FFMPEG = ffmpeg
 CONVERT = convert
 MKBITMAP = mkbitmap
 POTRACE = potrace
@@ -59,7 +59,7 @@ ppm_odd := -filter:v "$(odd),$(speed)"
 ppm_even := -filter:v "$(even),$(speed),reverse"
 
 # Image processing options
-monochrome := -layers Flatten -dither None -monochrome -negate
+monochrome := -layers Flatten -dither None -monochrome
 animate := -delay $(delay) -dispose None -loop 0 -background white
 
 # Lists of prerequisite files
